@@ -4,6 +4,7 @@ package com.atguigu.web.controller;
 import com.atguigu.web.exception.InvalidUserException;
 import com.atguigu.web.service.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.NamedThreadLocal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,12 @@ import java.util.Map;
 //@Controller; 如果有父子容器 @Component，默认是在父容器中，还找不到
 //@Component+@RequestMapping
 //@RestController
+
+
 @Controller
 public class HelloController {
+
+
 
 	public HelloController(){
 		System.out.println("HelloController.....");
@@ -44,7 +49,7 @@ public class HelloController {
 							 Model model,
 							 Integer i,
 							 RedirectAttributes ra){ //@RequestParam Map<String,Object> params：所有请求参数全封装进来
-		int x =10/i;
+		int x =10/i; m++;
 		if("abc".equals(user)){
 			//非法的用户信息
 			throw new InvalidUserException();

@@ -35,7 +35,7 @@ public class MvcExtendConfiguration implements WebMvcConfigurer {
 // 3、只要这个 DelegatingWebMvcConfiguration 生效，他从容器中拿所有的configure进行
 // 4、两种方式把 DelegatingWebMvcConfiguration 搞进来 + 一种方式自己写扩展
 	//1）、随便在哪个配置类位置加 @EnableWebMvc，然后只需要给 容器中放 WebMvcConfigurer即可
-	//2）、自己写一个配置类（在容器中）来继承 DelegatingWebMvcConfiguration，然后只需要给 容器中放 WebMvcConfigurer即可
+	//2）、自己写一个配置类（在容器中）来继承 DelegatingWebMvcConfiguration，然后只需要给 容器中放 WebMvcConfigurer即可;继承这个可以
 	//3）、自己写一个配置类（在容器中）来继承 WebMvcConfigurationSupport，我们只能去实现模板方法，进行扩展
 
 //这个DelegatingWebMvcConfiguration的特效就是，

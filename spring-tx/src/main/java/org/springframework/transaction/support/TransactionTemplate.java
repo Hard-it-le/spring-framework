@@ -129,14 +129,14 @@ public class TransactionTemplate extends DefaultTransactionDefinition
 	@Nullable
 	public <T> T execute(TransactionCallback<T> action) throws TransactionException {
 		Assert.state(this.transactionManager != null, "No PlatformTransactionManager set");
-
+		//事务模板
 		if (this.transactionManager instanceof CallbackPreferringPlatformTransactionManager) {
 			return ((CallbackPreferringPlatformTransactionManager) this.transactionManager).execute(this, action);
 		}
 		else {
 			TransactionStatus status = this.transactionManager.getTransaction(this);
 			T result;
-			try {
+			try { //执行事务方法
 				result = action.doInTransaction(status);
 			}
 			catch (RuntimeException | Error ex) {
