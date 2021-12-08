@@ -1503,7 +1503,8 @@ public class DispatcherServlet extends FrameworkServlet {
 		if (mappedHandler != null) {
 			mappedHandler.triggerAfterCompletion(request, response, ex);
 		}
-		throw ex;  //抛出去
+		//抛出去
+		throw ex;
 	}
 
 	/**
