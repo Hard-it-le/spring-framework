@@ -1,90 +1,69 @@
 package com.spring;
 
 
-import com.spring.aop.HelloService;
-import com.spring.circle.A;
+import com.spring.bean.Cat;
+import com.spring.bean.Person;
 import com.spring.config.MainConfig;
-import com.spring.listener.AppEventPublisher;
-import com.spring.listener.ChangeEvent;
-import com.spring.listener.MessageEvent;
+import com.spring.config.MainConfigImport;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * 注解版Spring的用法
+ *
+ * @author yujiale
  */
 public class AnnotationMainTest {
 
 	public static void main(String[] args) {
-//		new ClassPathXmlApplicationContext()
 
-		ApplicationContext applicationContext =
-				new AnnotationConfigApplicationContext(MainConfig.class);
+		scopeTest();
 
-
-//		Hello bean = applicationContext.getBean(Hello.class);
-//		Hello bea2 = applicationContext.getBean(Hello.class);
-//		System.out.println(bean == bea2); //还是单例
-
-		//循环引用,原理测试
-		//AOP,原理测试
-		HelloService helloService = applicationContext.getBean(HelloService.class);
-
-		//代理对象来调用方法
-		helloService.sayHello("zhangsan");
+	}
 
 
+	/**
+	 * annotation注解的简单实用
+	 */
+	public static void annotationTest(){
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(MainConfig.class);
+		Person bean = applicationContext.getBean(Person.class);
+		System.out.println(bean);
+	}
 
-//		applicationContext.publishEvent(new Object());
-//		applicationContext.publishEvent(new ApplicationEvent() {
-//			@Override
-//			public String toString() {
-//				return super.toString();
-//			}
-//		});
+	/**
+	 * import注解的简单使用
+	 */
+	public static void importTest() {
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(MainConfigImport.class);
+		Person bean = applicationContext.getBean(Person.class);
+		System.out.println(bean);
+	}
 
-		//测试事件
-		AppEventPublisher eventPublisher = applicationContext.getBean(AppEventPublisher.class);
-		eventPublisher.publish(new A());
-		eventPublisher.publish(new MessageEvent("hello，你好"));
-		eventPublisher.publish(new ChangeEvent(eventPublisher,"sending..."));
+	/**
+	 * BeanDefinitionRegister图纸中心简单使用
+	 */
+	public static void importBeanDefinitionRegistryTest() {
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(MainConfig.class);
+		String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
+		for (String name : beanDefinitionNames) {
+			System.out.println(name);
+		}
+	}
 
+	/**
+	 * scope简单用法
+	 */
+	public static void scopeTest(){
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(MainConfig.class);
 
-//		Person bean = applicationContext.getBean(Person.class);
+		Cat cat1 = applicationContext.getBean(Cat.class);
+		Cat cat2 = applicationContext.getBean(Cat.class);
 
-//		System.out.println(bean);
-
-
-//		String[] names = applicationContext.getBeanDefinitionNames();
-//		for (String name : names) {
-//			System.out.println(name);
-//		}
-
-
-//		Cat bean1 = applicationContext.getBean(Cat.class);
-//
-//		Cat bean2 = applicationContext.getBean(Cat.class);
-//
-//		System.out.println(bean1 == bean2);  //false
-
-//		Person bean1 = applicationContext.getBean(Person.class);
-//
-//		Cat cat = bean1.getCat();
-//
-//		Person bean2 = applicationContext.getBean(Person.class);
-//
-//		Cat cat1 = bean2.getCat();
-//		System.out.println(cat1 == cat);  //true
-//		System.out.println(cat1);
-
-
-//		Person bean = applicationContext.getBean(Person.class);
-//
-//		ApplicationContext context = bean.getContext();
-//
-//		System.out.println(context == applicationContext);
-
+		System.out.println(cat1==cat2);
 
 
 	}
+
+
 }

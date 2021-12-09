@@ -18,13 +18,16 @@ import org.springframework.context.MessageSourceAware;
  * 	  - 通过实现接口的方式自动注入了 ApplicationContext、MessageSource。是由BeanPostProcessor（Bean的后置处理器完成的）
  *
  */
-//@Component
+
 public class Person implements ApplicationContextAware, MessageSourceAware {
 
 //	@Autowired
 	ApplicationContext context;  //可以要到ioc容器
 	MessageSource messageSource;
 
+
+	@Autowired
+	private Cat cat;
 
 
 
@@ -39,8 +42,7 @@ public class Person implements ApplicationContextAware, MessageSourceAware {
 
 	private String name;
 
-//	@Autowired  依赖的组件是多实例就不能Autowired
-	private Cat cat;
+
 
 
 	public void setName(String name) {
@@ -53,18 +55,6 @@ public class Person implements ApplicationContextAware, MessageSourceAware {
 
 
 
-	@Autowired  //去发现一下.....
-	public void setCat(Cat cat) {
-		this.cat = cat;
-	}
-
-
-
-	//
-//	@Lookup  //去容器中找。@Bean的这种方式注册的Person @Lookup不生效
-	public Cat getCat() {
-		return cat;
-	}
 
 	@Override
 	public String toString() {

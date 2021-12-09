@@ -7,16 +7,4 @@
 		<property name="name" value="张三"/>
  	</bean>
 
-
-<!--	bean class="Cat" id="cat" abstract="true" lazy-init="true"  -->
-	<bean class="com.spring.bean.Cat" id="cat" >
-<!--		<constructor-arg-->
-		<property name="name" value="张三的猫"/>
- 	</bean>
-
-
-	<bean class="com.spring.bean.HelloFactory" id="hello" />
-<!--	xml  转为 BeanDefinition 这个java对象-->
-	
-<!--	<import resource=""-->
 </beans>
