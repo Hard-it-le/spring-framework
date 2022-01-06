@@ -18,13 +18,18 @@ public class XmlMainTest {
 
 	/**
 	 * ClassPathXmlApplicationContext使用
-	 *FileSystemXmlApplicationContext一般不推荐使用（全路径）
-	 *
+	 * FileSystemXmlApplicationContext一般不推荐使用（全路径）
 	 */
-	public static void test01(){
+	public static void test01() {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beans.xml");
 		Person person = (Person) applicationContext.getBean("person");
+		System.out.println("xml使用spring");
 		System.out.println(person);
+	}
 
+	public static void test02() {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+		Person bean = context.getBean(Person.class);
+		System.out.println(bean);
 	}
 }

@@ -1,15 +1,18 @@
-com/spring/config/AopOpenConfig.java
- com.spring.config.AopOpenConfig
-com/spring/MainTest.java
- com.spring.MainTest
-com/spring/AnnotationMainTest.java
- com.spring.AnnotationMainTest
-com/spring/config/MainConfigImport.java
- com.spring.config.MainConfigImport
- com.spring.config.MainConfigImport$MyImportRegistrar
-com/spring/config/MainConfig.java
- com.spring.config.MainConfig
 com/spring/bean/Cat.java
  com.spring.bean.Cat
+com/spring/config/AopOpenConfig.java
+ com.spring.config.AopOpenConfig
 com/spring/bean/Person.java
  com.spring.bean.Person
+com/spring/XmlMainTest.java
+ com.spring.XmlMainTest
+com/spring/bean/Person2.java
+ com.spring.bean.Person2
+com/spring/config/MainConfig1.java
+ com.spring.config.MainConfig1
+com/spring/bean/Person1.java
+ com.spring.bean.Person1
+com/spring/config/MainConfigImport1.java
+ com.spring.config.MainConfigImport1
+com/spring/AnnotationMainTest.java
+ com.spring.AnnotationMainTest

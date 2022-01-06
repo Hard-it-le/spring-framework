@@ -17,16 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class Person {
 
-
 	@Autowired
 	private Cat cat;
-	private String name;
 
+	private String name;
 
 	public Person() {
 		System.out.println("person创建....");
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
@@ -36,6 +34,13 @@ public class Person {
 		return name;
 	}
 
+	public Cat getCat() {
+		return cat;
+	}
+
+	public void setCat(Cat cat) {
+		this.cat = cat;
+	}
 
 	@Override
 	public String toString() {
