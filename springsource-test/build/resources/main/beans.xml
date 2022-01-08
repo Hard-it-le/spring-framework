@@ -3,8 +3,12 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-	<bean    id="person"  class="com.spring.bean.Person" autowire="byType" >
+	<bean id="person" class="com.spring.bean.Person" autowire="byType">
 		<property name="name" value="张三"/>
- 	</bean>
+	</bean>
+
+	<bean id="cat" class="com.spring.bean.Cat">
+		<property name="name" value="张三的毛 "/>
+	</bean>
 
 </beans>
