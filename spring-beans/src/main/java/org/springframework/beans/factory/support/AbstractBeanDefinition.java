@@ -16,14 +16,6 @@
 
 package org.springframework.beans.factory.support;
 
-import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Supplier;
-
 import org.springframework.beans.BeanMetadataAttributeAccessor;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -37,6 +29,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
+import java.lang.reflect.Constructor;
+import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * Base class for concrete, full-fledged {@link BeanDefinition} classes,
@@ -138,9 +134,16 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	public static final String INFER_METHOD = "(inferred)";
 
 
+	/**
+	 * 用于保存bean组件的class对象
+	 */
 	@Nullable
 	private volatile Object beanClass;
 
+	/**
+	 * bean的作用范围
+	 * 默认是singleton，prototype
+	 */
 	@Nullable
 	private String scope = SCOPE_DEFAULT;
 
@@ -203,9 +206,10 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private Resource resource;
 
-	//只要有任何组件需要注册到beanFactory中，必先得有bean的定义信息
 	/**
 	 * Create a new AbstractBeanDefinition with default settings.
+	 *
+	 * 只要有任何组件需要注册到beanFactory中，必先得有bean的定义信息
 	 */
 	protected AbstractBeanDefinition() {
 		this(null, null);

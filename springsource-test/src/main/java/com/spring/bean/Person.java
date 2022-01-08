@@ -1,7 +1,5 @@
 package com.spring.bean;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 /**
  * Aware接口；帮我们装配Spring底层的一些组件
@@ -17,9 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class Person {
 
-	@Autowired
-	private Cat cat;
-
 	private String name;
 
 	public Person() {
@@ -34,13 +29,6 @@ public class Person {
 		return name;
 	}
 
-	public Cat getCat() {
-		return cat;
-	}
-
-	public void setCat(Cat cat) {
-		this.cat = cat;
-	}
 
 	@Override
 	public String toString() {

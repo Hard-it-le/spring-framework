@@ -16,60 +16,10 @@
 
 package org.springframework.beans.factory.support;
 
-import java.io.IOException;
-import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectStreamException;
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-
-import javax.inject.Provider;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.TypeConverter;
-import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.beans.factory.BeanCurrentlyInCreationException;
-import org.springframework.beans.factory.BeanDefinitionStoreException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.BeanNotOfRequiredTypeException;
-import org.springframework.beans.factory.CannotLoadBeanClassException;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.InjectionPoint;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
-import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.SmartFactoryBean;
-import org.springframework.beans.factory.SmartInitializingSingleton;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanDefinitionHolder;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.config.DependencyDescriptor;
-import org.springframework.beans.factory.config.NamedBeanHolder;
+import org.springframework.beans.factory.*;
+import org.springframework.beans.factory.config.*;
 import org.springframework.core.OrderComparator;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.MergedAnnotation;
@@ -78,12 +28,21 @@ import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.log.LogMessage;
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.CompositeIterator;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.util.*;
+
+import javax.inject.Provider;
+import java.io.*;
+import java.lang.annotation.Annotation;
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * Spring's default implementation of the {@link ConfigurableListableBeanFactory}
@@ -116,6 +75,8 @@ import org.springframework.util.StringUtils;
  * @see #addBeanPostProcessor
  * @see #getBean
  * @see #resolveDependency
+ *
+ * DefaultListableBeanFactory档案馆，使用组合模式把BeanDefinitionRegistry、BeanFactory、singletonBeanRegistry
  */
 @SuppressWarnings("serial")
 
@@ -137,9 +98,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 
-	/** Map from serialized id to factory instance. */
-
-	//组合模式,Spring里面可以有很多工厂。
+	/** Map from serialized id to factory instance.
+	 * 组合模式,Spring里面可以有很多工厂,可以使用多工厂模式，互相隔离
+	 * */
 	private static final Map<String, Reference<DefaultListableBeanFactory>> serializableFactories =
 			new ConcurrentHashMap<>(8);
 
@@ -154,6 +115,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private boolean allowEagerClassLoading = true;
 
 	/** Optional OrderComparator for dependency Lists and arrays. */
+	//依赖比较器
 	@Nullable
 	private Comparator<Object> dependencyComparator;
 
@@ -161,6 +123,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private AutowireCandidateResolver autowireCandidateResolver = SimpleAutowireCandidateResolver.INSTANCE;
 
 	/** Map from dependency type to corresponding autowired value. */
+	//解析集合中的依赖
 	private final Map<Class<?>, Object> resolvableDependencies = new ConcurrentHashMap<>(16);
 
 	/**如果容器中有Map<Class, Object[]/String[] ></> Map of bean definition objects, keyed by bean name. */
@@ -171,15 +134,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private final Map<String, BeanDefinitionHolder> mergedBeanDefinitionHolders = new ConcurrentHashMap<>(256);
 
 	/** Map of singleton and non-singleton bean names, keyed by dependency type. */
+	//按照类型找到所有的符合类型的bean集合
 	private final Map<Class<?>, String[]> allBeanNamesByType = new ConcurrentHashMap<>(64);
 
 	/** Map of singleton-only bean names, keyed by dependency type. */
-	//Spring中按照类型得到组件的一个底层 池
-    //车的图纸，String（cs75）--Class（图纸）
+	//Spring中按照类型得到组件的一个底层池，车的图纸，String（cs75）--Class（图纸）
 	private final Map<Class<?>, String[]> singletonBeanNamesByType = new ConcurrentHashMap<>(64);
 
 	/** List of bean definition names, in registration order. */
-	//保存所有BeanDefinition的名字。
+	//保存所有BeanDefinition的名字集合。
 	private volatile List<String> beanDefinitionNames = new ArrayList<>(256);
 
 	/** List of names of manually registered singletons, in registration order. */

@@ -181,7 +181,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	private Thread shutdownHook;
 
 	/** ResourcePatternResolver used by this context. */
-	// 策略模式的环境类 ；
+	// 策略模式的环境类
 	private ResourcePatternResolver resourcePatternResolver;
 
 	/** LifecycleProcessor for managing the lifecycle of beans within this context. */
@@ -674,14 +674,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		// Tell the internal bean factory to use the context's class loader etc.
 		beanFactory.setBeanClassLoader(getClassLoader());
-		if (!shouldIgnoreSpel) { //解释器模式  ${ }
+		if (!shouldIgnoreSpel) {
+			//解释器模式  ${ }
 			beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
 		}
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 		// Configure the bean factory with context callbacks.
-		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this)); //准备一个处理Aware接口功能的后置处理器
-		beanFactory.ignoreDependencyInterface(EnvironmentAware.class); //告诉Spring先别管这些接口
+		//准备一个处理Aware接口功能的后置处理器
+		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
+		//告诉Spring先别管这些接口
+		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
 		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);
 		beanFactory.ignoreDependencyInterface(ApplicationEventPublisherAware.class);

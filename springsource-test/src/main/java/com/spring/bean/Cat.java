@@ -8,12 +8,18 @@ import org.springframework.stereotype.Component;
  * @program: spring
  * @author: yjl
  * @created: 2021/12/09
+ * 
+ * cat是多实例的，容器就会在创建一个cat对象
  */
 @Component
-@Scope(scopeName = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Cat {
 
 	private String name;
+
+	public Cat() {
+		System.out.println("cat初始化");
+	}
 
 	public String getName() {
 		return name;

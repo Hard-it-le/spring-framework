@@ -32,9 +32,10 @@ import org.springframework.lang.Nullable;
  * 保存很多的BeanDefinition信息,都有一个唯一的名字
  * each uniquely identified by a String name. Depending on the bean definition,
  * the factory will return either an independent instance of a contained object
- * (the Prototype design pattern【原型模式】), or a single shared instance (a superior
- * alternative to the Singleton design pattern【单例设计模式】, in which the instance is a
- * singleton in the scope of the factory). Which type of instance will be returned
+ * (the Prototype design pattern【原型模式】),
+ * or a single shared instance (a superior alternative to the Singleton design pattern【单例设计模式】, in which the instance is a
+ * singleton in the scope of the factory).
+ * Which type of instance will be returned
  * depends on the bean factory configuration: the API is the same. Since Spring
  * 2.0, further scopes are available depending on the concrete application
  * context (e.g. "request" and "session" scopes in a web environment).

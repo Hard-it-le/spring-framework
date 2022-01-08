@@ -1,11 +1,10 @@
 package com.spring.config;
 
 import com.spring.bean.Cat;
-import com.spring.bean.Person2;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.type.AnnotationMetadata;
 
@@ -15,8 +14,9 @@ import org.springframework.core.type.AnnotationMetadata;
  * @created: 2021/12/09
  */
 @Configuration
-@Import(Person2.class)
-public class MainConfigImport2 {
+//@Import({PersonRegistrar.class, MainConfigImportRegistrar.MyImportRegistrar.class})
+@ComponentScan("com.spring.bean")
+public class MainConfigImportRegistrar {
 
 	/**
 	 * BeanDefinitionRegistry:bean定义信息的注册中心（每个Bean的信息都在这里）
@@ -29,6 +29,7 @@ public class MainConfigImport2 {
 			//BeanDefinition
 			RootBeanDefinition catDefinition = new RootBeanDefinition();
 
+			//可以声明定义信息，包括需要自动装配什么？
 			catDefinition.setBeanClass(Cat.class);
 			//registerBeanDefinition必须知道实例的类型和名字
 			registry.registerBeanDefinition("tomCat", catDefinition);

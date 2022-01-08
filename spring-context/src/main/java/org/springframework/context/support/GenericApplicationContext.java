@@ -16,11 +16,6 @@
 
 package org.springframework.context.support;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
@@ -39,6 +34,11 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.metrics.ApplicationStartup;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 /**
  * Generic ApplicationContext implementation that holds a single internal
@@ -92,7 +92,8 @@ import org.springframework.util.Assert;
  * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
  * @see org.springframework.beans.factory.support.PropertiesBeanDefinitionReader
  */
-public class GenericApplicationContext extends AbstractApplicationContext implements BeanDefinitionRegistry {
+public class GenericApplicationContext extends AbstractApplicationContext
+		implements BeanDefinitionRegistry {
 
 	private final DefaultListableBeanFactory beanFactory;
 
@@ -110,6 +111,12 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 	 * @see #refresh
 	 */
 	public GenericApplicationContext() {
+
+		/**
+		 * 调用父类的构造函数，为ApplicationContext spring上下文对象初始化beanFactory
+		 *
+		 * DefaultListableBeanFactory是最底层的实现类，居于注册bean的能力
+		 */
 		this.beanFactory = new DefaultListableBeanFactory();
 	}
 

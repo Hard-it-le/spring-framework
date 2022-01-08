@@ -1,7 +1,7 @@
 package com.spring.config;
 
 
-import com.spring.bean.Person1;
+import com.spring.bean.Person;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Configuration;
  * 配置类
  */
 @Configuration
-public class MainConfig1 {
+public class MainConfig {
 
 	@Bean
-	public Person1 person() {
-		Person1 person1 = new Person1();
+	public Person person() {
+		Person person1 = new Person();
 		person1.setName("李四");
 		return person1;
 	}

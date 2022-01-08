@@ -1,6 +1,6 @@
 package com.spring.config;
 
-import com.spring.bean.Person1;
+import com.spring.bean.Person;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Import;
  * @created: 2021/12/09
  */
 @Configuration
-@Import(Person1.class)
-public class MainConfigImport1 {
+@Import(Person.class)
+public class MainConfigImport {
 
 }
 
