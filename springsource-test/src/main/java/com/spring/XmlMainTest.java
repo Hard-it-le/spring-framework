@@ -11,8 +11,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * xml版Spring的用法
  */
 public class XmlMainTest {
-	public static void main(String[] args) {
+	public static void main(String[] args)  throws Throwable{
 		test01();
+		String s = new String();
+
+
+		StringBuffer stringBuffer = new StringBuffer();
+		StringBuilder stringBuilder = new StringBuilder();
+		s.equals(stringBuilder);
+
 	}
 
 

@@ -546,31 +546,45 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareBeanFactory(beanFactory);
 
 			try {
-				//留给子类的模板方法，允许子类继续对工厂执行一些处理； Allows post-processing of the bean factory in context subclasses.
+				//留给子类的模板方法，允许子类继续对工厂执行一些处理，BeanFactory准备工作完成后进行的后置处理工作
+				// Allows post-processing of the bean factory in context subclasses.
 				postProcessBeanFactory(beanFactory);
 
 				StartupStep beanPostProcess = this.applicationStartup.start("spring.context.beans.post-process");
-				//【大核心】工厂增强：执行所有的BeanFactory后置增强器；利用BeanFactory后置增强器对工厂进行修改或者增强,配置类会在这里进行解析。 Invoke factory processors registered as beans in the context.
+				//【大核心】工厂增强：执行所有的BeanFactory后置增强器；
+				//实例化实现了BeanFactoryPostProcessors接口的Bean，并调用接口方法
+				// 利用BeanFactory后置增强器对工厂进行修改或者增强,配置类会在这里进行解析。
+				// Invoke factory processors registered as beans in the context.
 				invokeBeanFactoryPostProcessors(beanFactory);
 
-				//【核心】注册所有的Bean的后置处理器 Register bean processors that intercept bean creation.
+				//【核心】注册所有的Bean的后置处理器，在创建bean的前后等执行
+				// Register bean processors that intercept bean creation.
 				registerBeanPostProcessors(beanFactory);
 				beanPostProcess.end();
 
-				//初始化国际化功能 Initialize message source for this context.
+				//初始化国际化功能（消息绑定、消息解析等）
+				// Initialize message source for this context.
 				initMessageSource();
 
 				//初始化事件多播功能（事件派发） Initialize event multicaster for this context.
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				//子类重写方法，在容器刷新的时候可以自定义逻辑，比如创建Tomcat等web服务器
 				onRefresh();
 
-				//注册监听器，从容器中获取所有的ApplicationListener； Check for listener beans and register them.
+				//注册监听器，从容器中获取所有的ApplicationListener的Bean
+				// Check for listener beans and register them.
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
 				//【大核心】bean创建；完成 BeanFactory 初始化。（工厂里面所有的组件都好了）
+				/*
+					初始化所有剩下的非懒加载的单例Bean，初始化创建非懒加载方式的单例Bean实例（未设置属性）
+					填充属性
+					初始化方法调用
+					调用后置处理器（BeanPostProcessors）对实例Bean进行后置处理
+				 */
 				finishBeanFactoryInitialization(beanFactory);
 
 				//发布事件 Last step: publish corresponding event.
@@ -650,7 +664,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see org.springframework.web.context.support.WebApplicationContextUtils#initServletPropertySources
 	 */
 	protected void initPropertySources() {
-		// For subclasses: do nothing by default. 自行在此处加载一些自己感兴趣的信息。【WebApplicationContextUtils.initServletPropertySources】web-ioc容器启动的时候一般在此加载当前应用的上下文信息（ApplicationContext）
+		// For subclasses: do nothing by default.
+		// 自行在此处加载一些自己感兴趣的信息。【WebApplicationContextUtils.initServletPropertySources】web-ioc容器启动的时候一般在此加载当前应用的上下文信息（ApplicationContext）
 	}
 
 	/**
